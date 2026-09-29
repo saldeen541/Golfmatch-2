@@ -10,7 +10,7 @@
    ========================================================================== */
 
 // UI-REDESIGN: ny versjon, redesign.css i listen og valg av utseende (også Links).
-var VERSJON = 'golfapp-v8-redesign-7';
+var VERSJON = 'golfapp-v8-redesign-8';
 
 var FILER = [
   './',

@@ -8,9 +8,10 @@
 <!-- Appen laster ingenting utenfra. Denne regelen håndhever det. -->
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'none'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self' blob:; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
-<!-- UI-REDESIGN: statuslinjen følger lys og mørk modus. -->
-<meta name="theme-color" content="#eef3ec" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#08120d" media="(prefers-color-scheme: dark)">
+<!-- UI-REDESIGN: feltet med klokke og batteri øverst får samme farge som
+     topplinjen i temaet som er valgt. app.js setter fargen ved oppstart og
+     når temaet byttes. -->
+<meta name="theme-color" id="statusfarge" content="#f0f8f5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <!-- UI-REDESIGN: appen heter Golfmatch 2 i denne versjonen. -->
