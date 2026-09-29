@@ -172,31 +172,36 @@
      lys før den blir mørk. */
   var TEMA_NOKKEL = 'golfapp-tema';
 
+  function folgTelefonen() {
+    if (gjeldendeValg === 'auto') settTema('auto');
+  }
+
   function lagretTema() {
     try { return localStorage.getItem(TEMA_NOKKEL) || 'auto'; }
     catch (e) { return 'auto'; }
   }
 
-  // Statuslinjefarge for temaer som ikke har sin egen meta-tagg.
-  var STATUSFARGE = { links: '#d6e8ef' };
+  // Fargen på feltet øverst med klokke og batteri. Den er målt fra
+  // topplinjen i hvert tema, så feltet og topplinjen glir sammen.
+  var STATUSFARGE = { light: '#f0f8f5', dark: '#0f1f16', links: '#e6f0f2' };
+  var MORK_TELEFON = global.matchMedia ? global.matchMedia('(prefers-color-scheme: dark)') : null;
+  var gjeldendeValg = 'auto';
 
   function settTema(valg) {
+    gjeldendeValg = valg || 'auto';
     var tema = valg === 'lys' ? 'light' : valg === 'mork' ? 'dark'
              : valg === 'links' ? 'links' : null;
     var rot = document.documentElement;
     if (tema) rot.setAttribute('data-theme', tema);
     else rot.removeAttribute('data-theme');
 
-    // Fargen på statuslinjen følger valget. Taggene har hver sin media-regel
-    // for lys og mørk. Ved manuelt valg slås den riktige på og den andre av.
-    Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (m) {
-      if (m.dataset.media === undefined) m.dataset.media = m.getAttribute('media') || '';
-      if (m.dataset.farge === undefined) m.dataset.farge = m.getAttribute('content') || '';
-      var gjelderMork = m.dataset.media.indexOf('dark') >= 0;
-      if (!tema) m.setAttribute('media', m.dataset.media);
-      else m.setAttribute('media', (tema === 'dark') === gjelderMork ? 'all' : 'not all');
-      m.setAttribute('content', (!gjelderMork && STATUSFARGE[tema]) || m.dataset.farge);
-    });
+    // Én meta-tagg, med fargen byttet direkte. iPhone følger ikke alltid med
+    // når media-regelen på taggen endres, men den følger en ny farge.
+    var synlig = tema || (MORK_TELEFON && MORK_TELEFON.matches ? 'dark' : 'light');
+    var meta = document.getElementById('statusfarge');
+    if (meta && meta.getAttribute('content') !== STATUSFARGE[synlig]) {
+      meta.setAttribute('content', STATUSFARGE[synlig]);
+    }
 
     try { localStorage.setItem(TEMA_NOKKEL, valg || 'auto'); } catch (e) { /* ikke kritisk */ }
   }
@@ -288,6 +293,10 @@
 
   function start() {
     settTema(lagretTema());
+    if (MORK_TELEFON) {
+      if (MORK_TELEFON.addEventListener) MORK_TELEFON.addEventListener('change', folgTelefonen);
+      else if (MORK_TELEFON.addListener) MORK_TELEFON.addListener(folgTelefonen);
+    }
     registrerServiceWorker();
     beOmVarigLagring();
 
