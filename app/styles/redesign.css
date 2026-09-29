@@ -1,0 +1,1081 @@
+/* ==========================================================================
+   Golfapp - UI-REDESIGN (testrevisjon, september 2026)
+
+   HELE REDESIGNEN LIGGER I DENNE FILEN. Den lastes etter tokens.css og
+   app.css og overstyrer bare utseendet. Ingen regler for funksjon, data
+   eller beregning er endret. Fjernes lenken til filen i index.html, er
+   appen tilbake til det gamle utseendet.
+
+   Retning
+   - Liquid glass på navigasjonslaget: topplinje, bunnmeny, stillingen under
+     registrering, dialoger og meldinger. Glasset ligger over innholdet, slik
+     Apple bruker det i iOS 26. Selve innholdet står på rolige, tette flater,
+     så tall og tekst alltid er lett å lese på banen.
+   - Farger fra golfbanen: fairwaygrønn som hovedfarge, himmel og gress i
+     bakgrunnen, sand til par-merker, flaggrødt for hullet du står på og
+     hole in one, messing til eagle.
+   - Lys og mørk modus følger telefonen. Mørk modus er «klubbhus»:
+     skogsgrønn med messing.
+   - Ber telefonen om mindre gjennomsiktighet, blir glasset tett.
+
+   Innhold
+   T1  Tema: lys
+   T2  Tema: mørk
+   T2b Tema: Links (valgfritt, alltid lyst)
+   T3  Mindre gjennomsiktighet
+   R1-R15 Komponenter
+   R16 Links: glass på kortene
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   T1. Tema: lys («Fairway»)
+   -------------------------------------------------------------------------- */
+
+:root {
+  --surface-0: #eef3ec;
+  --surface-1: #ffffff;
+  --surface-2: #f2f5f0;
+  --surface-3: #e3e9e1;
+  --border: #dde5da;
+  --border-strong: #b9c6b6;
+  --ink: #0f2419;
+  --ink-2: #44574b;
+  --ink-3: #6a7b70;
+  --accent: #1f7a4c;
+  --accent-hover: #1a6a42;
+  --accent-soft: #e2f1e7;
+  --good: #1a7f47;
+  --good-soft: #e1f3e7;
+  --danger: #b8322a;
+  --danger-soft: #fbe8e6;
+
+  --rd-bg: #eaf1e8;
+  --rd-bg-art:
+    linear-gradient(180deg, rgba(178, 216, 238, 0.55) 0%, rgba(178, 216, 238, 0) 28%),
+    radial-gradient(90% 45% at 0% 14%, rgba(204, 232, 196, 0.75), transparent 65%),
+    radial-gradient(120% 55% at 50% 112%, rgba(140, 200, 152, 0.5), transparent 62%);
+  --rd-glass: rgba(248, 252, 247, 0.85);
+  --rd-glass-strong: rgba(252, 254, 251, 0.84);
+  --rd-glass-edge: rgba(255, 255, 255, 0.85);
+  --rd-hairline: rgba(15, 36, 25, 0.12);
+  --rd-float-shadow: 0 10px 30px rgba(18, 52, 32, 0.16), 0 2px 6px rgba(18, 52, 32, 0.08);
+  --rd-control: rgba(255, 255, 255, 0.9);
+  --rd-control-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 3px rgba(18, 52, 32, 0.12);
+  --rd-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f7a4c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 5l-7 7 7 7'/%3E%3C/svg%3E");
+  --rd-primary-ink: #1f7a4c;
+  --rd-tab-active-ink: #176b41;
+  --rd-tab-active-bg: rgba(31, 122, 76, 0.13);
+  --rd-card-border: rgba(15, 36, 25, 0.07);
+  --rd-card-border-strong: rgba(15, 36, 25, 0.16);
+  --rd-card-shadow: 0 1px 2px rgba(18, 52, 32, 0.06), 0 6px 18px rgba(18, 52, 32, 0.06);
+  --rd-hero-bg: linear-gradient(150deg, #2f9a5e 0%, #1c7446 48%, #0f4f2f 100%);
+  --rd-hero-border: rgba(255, 255, 255, 0.18);
+  --rd-hero-shadow: 0 14px 34px rgba(20, 90, 50, 0.32);
+  --rd-hero-ink: #ffffff;
+  --rd-hero-ink-2: rgba(255, 255, 255, 0.8);
+  --rd-hero-btn-bg: #ffffff;
+  --rd-hero-btn-ink: #145c37;
+  --rd-hero-motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cellipse cx='64' cy='96' rx='46' ry='13' fill='%23ffffff' fill-opacity='.14'/%3E%3Cellipse cx='64' cy='96' rx='5' ry='2' fill='%230b3a22' fill-opacity='.6'/%3E%3Cpath d='M64 96V22' stroke='%23ffffff' stroke-opacity='.75' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M66 23l30 10-30 11z' fill='%23ff6b4a'/%3E%3C/svg%3E");
+  --rd-soft: rgba(15, 36, 25, 0.045);
+  --rd-soft-solid: #f3f6f2;
+  --rd-sand-soft: #f6eedb;
+  --rd-sand-border: #e3d3ad;
+  --rd-sand-ink: #7a5a1c;
+  --rd-primary-bg: linear-gradient(180deg, #2a9160 0%, #1c7446 100%);
+  --rd-primary-on: #ffffff;
+  --rd-primary-shadow: 0 4px 14px rgba(28, 116, 70, 0.3);
+  --rd-danger-border: rgba(184, 50, 42, 0.35);
+  --rd-track: rgba(15, 36, 25, 0.07);
+  --rd-thumb: #ffffff;
+  --rd-gold: #9a6b00;
+  --rd-gold-soft: #fbf0d5;
+  --rd-flag: #e04a2b;
+  --rd-flag-soft: #fde9e3;
+  --rd-flag-glow: rgba(224, 74, 43, 0.35);
+  --rd-field: #f6f8f5;
+  --rd-now-bg: #fff3ee;
+  --rd-under: #16804a;
+  --rd-over: #3f4e45;
+  --rd-scrim: rgba(10, 30, 18, 0.35);
+  --focus-ring: 0 0 0 3px var(--surface-1), 0 0 0 5.5px #1f7a4c;
+}
+
+/* --------------------------------------------------------------------------
+   T2. Tema: mørk («Klubbhus»). Følger telefonens innstilling.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface-0: #08120d;
+    --surface-1: #122019;
+    --surface-2: #182a20;
+    --surface-3: #213629;
+    --border: #25392d;
+    --border-strong: #3a5445;
+    --ink: #edf3ee;
+    --ink-2: #b4c3b9;
+    --ink-3: #8a9c90;
+    --accent: #4cc486;
+    --accent-hover: #5fd396;
+    --accent-soft: #173a27;
+    --good: #57cf8f;
+    --good-soft: #143322;
+    --danger: #ff7a6b;
+    --danger-soft: #3a1714;
+  
+    --rd-bg: #07110c;
+    --rd-bg-art:
+      radial-gradient(110% 55% at 100% 0%, rgba(40, 110, 90, 0.35), transparent 60%),
+      radial-gradient(90% 55% at 0% 10%, rgba(30, 90, 50, 0.45), transparent 65%),
+      radial-gradient(120% 60% at 50% 115%, rgba(200, 160, 70, 0.14), transparent 60%);
+    --rd-glass: rgba(16, 29, 22, 0.85);
+    --rd-glass-strong: rgba(20, 36, 28, 0.86);
+    --rd-glass-edge: rgba(255, 255, 255, 0.10);
+    --rd-hairline: rgba(237, 243, 238, 0.12);
+    --rd-float-shadow: 0 12px 34px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4);
+    --rd-control: rgba(255, 255, 255, 0.07);
+    --rd-control-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 1px 3px rgba(0, 0, 0, 0.4);
+    --rd-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2357cf8f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 5l-7 7 7 7'/%3E%3C/svg%3E");
+    --rd-primary-ink: #57cf8f;
+    --rd-tab-active-ink: #7be0a8;
+    --rd-tab-active-bg: rgba(87, 207, 143, 0.14);
+    --rd-card-border: rgba(237, 243, 238, 0.07);
+    --rd-card-border-strong: rgba(237, 243, 238, 0.16);
+    --rd-card-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 22px rgba(0, 0, 0, 0.35);
+    --rd-hero-bg: linear-gradient(150deg, #2b7d52 0%, #17583a 50%, #0c3322 100%);
+    --rd-hero-border: rgba(255, 255, 255, 0.12);
+    --rd-hero-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    --rd-hero-ink: #ffffff;
+    --rd-hero-ink-2: rgba(255, 255, 255, 0.78);
+    --rd-hero-btn-bg: #e9c46a;
+    --rd-hero-btn-ink: #2a1f05;
+    --rd-hero-motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cellipse cx='64' cy='96' rx='46' ry='13' fill='%23ffffff' fill-opacity='.10'/%3E%3Cellipse cx='64' cy='96' rx='5' ry='2' fill='%23000000' fill-opacity='.5'/%3E%3Cpath d='M64 96V22' stroke='%23ffffff' stroke-opacity='.6' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M66 23l30 10-30 11z' fill='%23e9c46a'/%3E%3C/svg%3E");
+    --rd-soft: rgba(255, 255, 255, 0.05);
+    --rd-soft-solid: #16261d;
+    --rd-sand-soft: rgba(233, 196, 106, 0.12);
+    --rd-sand-border: rgba(233, 196, 106, 0.35);
+    --rd-sand-ink: #e9c46a;
+    --rd-primary-bg: linear-gradient(180deg, #3fb87a 0%, #2a9160 100%);
+    --rd-primary-on: #04130a;
+    --rd-primary-shadow: 0 4px 16px rgba(63, 184, 122, 0.25);
+    --rd-danger-border: rgba(255, 122, 107, 0.4);
+    --rd-track: rgba(255, 255, 255, 0.07);
+    --rd-thumb: rgba(255, 255, 255, 0.16);
+    --rd-gold: #e9c46a;
+    --rd-gold-soft: rgba(233, 196, 106, 0.14);
+    --rd-flag: #ff6a45;
+    --rd-flag-soft: rgba(255, 106, 69, 0.15);
+    --rd-flag-glow: rgba(255, 106, 69, 0.4);
+    --rd-field: rgba(0, 0, 0, 0.25);
+    --rd-now-bg: rgba(255, 106, 69, 0.10);
+    --rd-under: #57cf8f;
+    --rd-over: #c9d4cd;
+    --rd-scrim: rgba(0, 0, 0, 0.5);
+    --focus-ring: 0 0 0 3px var(--surface-1), 0 0 0 5.5px #57cf8f;
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface-0: #08120d;
+  --surface-1: #122019;
+  --surface-2: #182a20;
+  --surface-3: #213629;
+  --border: #25392d;
+  --border-strong: #3a5445;
+  --ink: #edf3ee;
+  --ink-2: #b4c3b9;
+  --ink-3: #8a9c90;
+  --accent: #4cc486;
+  --accent-hover: #5fd396;
+  --accent-soft: #173a27;
+  --good: #57cf8f;
+  --good-soft: #143322;
+  --danger: #ff7a6b;
+  --danger-soft: #3a1714;
+
+  --rd-bg: #07110c;
+  --rd-bg-art:
+    radial-gradient(110% 55% at 100% 0%, rgba(40, 110, 90, 0.35), transparent 60%),
+    radial-gradient(90% 55% at 0% 10%, rgba(30, 90, 50, 0.45), transparent 65%),
+    radial-gradient(120% 60% at 50% 115%, rgba(200, 160, 70, 0.14), transparent 60%);
+  --rd-glass: rgba(16, 29, 22, 0.85);
+  --rd-glass-strong: rgba(20, 36, 28, 0.86);
+  --rd-glass-edge: rgba(255, 255, 255, 0.10);
+  --rd-hairline: rgba(237, 243, 238, 0.12);
+  --rd-float-shadow: 0 12px 34px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --rd-control: rgba(255, 255, 255, 0.07);
+  --rd-control-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 1px 3px rgba(0, 0, 0, 0.4);
+  --rd-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2357cf8f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 5l-7 7 7 7'/%3E%3C/svg%3E");
+  --rd-primary-ink: #57cf8f;
+  --rd-tab-active-ink: #7be0a8;
+  --rd-tab-active-bg: rgba(87, 207, 143, 0.14);
+  --rd-card-border: rgba(237, 243, 238, 0.07);
+  --rd-card-border-strong: rgba(237, 243, 238, 0.16);
+  --rd-card-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 22px rgba(0, 0, 0, 0.35);
+  --rd-hero-bg: linear-gradient(150deg, #2b7d52 0%, #17583a 50%, #0c3322 100%);
+  --rd-hero-border: rgba(255, 255, 255, 0.12);
+  --rd-hero-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+  --rd-hero-ink: #ffffff;
+  --rd-hero-ink-2: rgba(255, 255, 255, 0.78);
+  --rd-hero-btn-bg: #e9c46a;
+  --rd-hero-btn-ink: #2a1f05;
+  --rd-hero-motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cellipse cx='64' cy='96' rx='46' ry='13' fill='%23ffffff' fill-opacity='.10'/%3E%3Cellipse cx='64' cy='96' rx='5' ry='2' fill='%23000000' fill-opacity='.5'/%3E%3Cpath d='M64 96V22' stroke='%23ffffff' stroke-opacity='.6' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M66 23l30 10-30 11z' fill='%23e9c46a'/%3E%3C/svg%3E");
+  --rd-soft: rgba(255, 255, 255, 0.05);
+  --rd-soft-solid: #16261d;
+  --rd-sand-soft: rgba(233, 196, 106, 0.12);
+  --rd-sand-border: rgba(233, 196, 106, 0.35);
+  --rd-sand-ink: #e9c46a;
+  --rd-primary-bg: linear-gradient(180deg, #3fb87a 0%, #2a9160 100%);
+  --rd-primary-on: #04130a;
+  --rd-primary-shadow: 0 4px 16px rgba(63, 184, 122, 0.25);
+  --rd-danger-border: rgba(255, 122, 107, 0.4);
+  --rd-track: rgba(255, 255, 255, 0.07);
+  --rd-thumb: rgba(255, 255, 255, 0.16);
+  --rd-gold: #e9c46a;
+  --rd-gold-soft: rgba(233, 196, 106, 0.14);
+  --rd-flag: #ff6a45;
+  --rd-flag-soft: rgba(255, 106, 69, 0.15);
+  --rd-flag-glow: rgba(255, 106, 69, 0.4);
+  --rd-field: rgba(0, 0, 0, 0.25);
+  --rd-now-bg: rgba(255, 106, 69, 0.10);
+  --rd-under: #57cf8f;
+  --rd-over: #c9d4cd;
+  --rd-scrim: rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 3px var(--surface-1), 0 0 0 5.5px #57cf8f;
+}
+
+/* --------------------------------------------------------------------------
+   T2b. Tema: «Links». Sand og himmel, med glass også på innholdskortene.
+   Velges i Innstillinger og er alltid lyst. Blokken definerer alle
+   variablene de mørke blokkene setter, slik at ingenting lekker inn når
+   telefonen står på mørk.
+   -------------------------------------------------------------------------- */
+
+:root[data-theme="links"] {
+  color-scheme: light;
+
+  --surface-0: #f4efe4;
+  --surface-1: rgba(255, 253, 247, 0.74);   /* scorekortpapir, litt gjennomsiktig */
+  --surface-2: #efe8da;
+  --surface-3: #e4dccb;
+  --border: #e0d7c4;
+  --border-strong: #c3b79c;
+  --ink: #1b2a22;
+  --ink-2: #4c5a51;
+  --ink-3: #5c665e;
+  --ink-on-accent: #ffffff;
+  --accent: #0f6e5a;
+  --accent-hover: #0c5d4c;
+  --accent-soft: #dcefe9;
+  --good: #0f7050;
+  --good-soft: rgba(15, 112, 80, 0.12);
+  --warn: #8a5a00;
+  --warn-soft: #f8ecd0;
+  --danger: #b1301f;
+  --danger-soft: #fbe6e1;
+  --player-1: #2a78d6;
+  --player-2: #eda100;
+  --player-3: #e87ba4;
+  --player-4: #008300;
+  --shadow-1: 0 1px 2px rgba(60, 50, 20, 0.08);
+  --shadow-2: 0 2px 10px rgba(60, 50, 20, 0.10);
+  --shadow-3: 0 8px 28px rgba(60, 50, 20, 0.16);
+
+  --rd-bg: #f1ead9;
+  --rd-bg-art:
+    linear-gradient(180deg, rgba(160, 206, 232, 0.75) 0%, rgba(160, 206, 232, 0) 34%),
+    radial-gradient(80% 40% at 15% 55%, rgba(230, 208, 160, 0.8), transparent 70%),
+    radial-gradient(90% 45% at 90% 75%, rgba(120, 190, 150, 0.55), transparent 70%),
+    linear-gradient(0deg, rgba(90, 160, 110, 0.45) 0%, transparent 35%);
+  --rd-glass: rgba(252, 250, 244, 0.72);
+  --rd-glass-strong: rgba(253, 251, 246, 0.86);
+  --rd-glass-edge: rgba(255, 255, 255, 0.9);
+  --rd-hairline: rgba(60, 50, 20, 0.13);
+  --rd-float-shadow: 0 10px 30px rgba(60, 50, 20, 0.18), 0 2px 6px rgba(60, 50, 20, 0.08);
+  --rd-control: rgba(255, 253, 247, 0.82);
+  --rd-control-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 3px rgba(60, 50, 20, 0.14);
+  --rd-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f6e5a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 5l-7 7 7 7'/%3E%3C/svg%3E");
+  --rd-primary-ink: #0f6e5a;
+  --rd-tab-active-ink: #0c5d4c;
+  --rd-tab-active-bg: rgba(15, 110, 90, 0.13);
+  --rd-card-border: rgba(255, 255, 255, 0.8);
+  --rd-card-border-strong: rgba(60, 50, 20, 0.17);
+  --rd-card-shadow: 0 1px 0 rgba(255,255,255,0.85) inset, 0 8px 24px rgba(60, 50, 20, 0.10);
+  --rd-hero-bg: linear-gradient(150deg, rgba(22, 134, 108, 0.94) 0%, rgba(12, 90, 74, 0.96) 100%);
+  --rd-hero-border: rgba(255, 255, 255, 0.35);
+  --rd-hero-shadow: 0 14px 34px rgba(12, 90, 74, 0.3);
+  --rd-hero-ink: #ffffff;
+  --rd-hero-ink-2: rgba(255, 255, 255, 0.86);
+  --rd-hero-btn-bg: #fffdf7;
+  --rd-hero-btn-ink: #0c5d4c;
+  --rd-hero-motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cellipse cx='64' cy='96' rx='46' ry='13' fill='%23ffffff' fill-opacity='.18'/%3E%3Cellipse cx='64' cy='96' rx='5' ry='2' fill='%23063a2e' fill-opacity='.6'/%3E%3Cpath d='M64 96V22' stroke='%23ffffff' stroke-opacity='.8' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M66 23l30 10-30 11z' fill='%23ffd45c'/%3E%3C/svg%3E");
+  /* Rolige felt får en svak sandtone i stedet for grått, så de ikke blir grumsete. */
+  --rd-soft: rgba(150, 115, 45, 0.07);
+  --rd-soft-solid: #f6f0e2;
+  --rd-sand-soft: #f3e6c6;
+  --rd-sand-border: #dcc697;
+  --rd-sand-ink: #7a5a1c;
+  --rd-primary-bg: linear-gradient(180deg, #16836b 0%, #0f6e5a 100%);
+  --rd-primary-on: #ffffff;
+  --rd-primary-shadow: 0 4px 14px rgba(15, 110, 90, 0.3);
+  --rd-danger-border: rgba(177, 48, 31, 0.35);
+  --rd-track: rgba(60, 50, 20, 0.08);
+  --rd-thumb: rgba(255, 253, 247, 0.97);
+  --rd-gold: #8a5a00;
+  --rd-gold-soft: #f8ecd0;
+  --rd-flag: #c73d25;
+  --rd-flag-soft: #fce6df;
+  --rd-flag-glow: rgba(199, 61, 37, 0.35);
+  --rd-field: rgba(255, 253, 247, 0.9);
+  --rd-now-bg: rgba(252, 226, 214, 0.85);
+  --rd-under: #0f7050;
+  --rd-over: #4a4538;
+  --rd-scrim: rgba(40, 30, 10, 0.3);
+  --focus-ring: 0 0 0 3px #fffdf7, 0 0 0 5.5px #0f6e5a;
+}
+
+/* --------------------------------------------------------------------------
+   T3. Mindre gjennomsiktighet: tett glass når telefonen ber om det.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  .topbar, .tabbar, .standing, .modal, #toast {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: var(--surface-1) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   R1. Grunnflate: en rolig «fairway»-bakgrunn bak alt innhold, slik at
+   glasset i navigasjonen har noe å bryte lyset mot.
+   -------------------------------------------------------------------------- */
+
+html { background: var(--rd-bg); }
+
+body {
+  background: transparent;
+  font-feature-settings: "kern" 1;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fast bakgrunn som et eget lag. background-attachment: fixed virker ikke
+   på iPhone, så vi bruker et fast pseudo-element i stedet. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--rd-bg-art), var(--rd-bg);
+}
+
+h1, h2, h3 { letter-spacing: -0.02em; font-weight: 750; }
+h2 { font-size: 1.3rem; }
+
+.muted { color: var(--ink-2); }
+.label { color: var(--ink-3); letter-spacing: 0.06em; font-weight: 700; }
+
+/* Avsnitt i kort får kontrollert luft, ikke nettleserens standardmarg. */
+.card p, .notice p, .empty p { margin: 0; }
+.card > p + p { margin-top: var(--s2); }
+
+/* --------------------------------------------------------------------------
+   R2. Glass: materialet for navigasjonslaget. Følger Apples prinsipp om at
+   glass ligger over innholdet (linjer, menyer, kontroller), mens selve
+   innholdet står på rolige, lesbare flater.
+   -------------------------------------------------------------------------- */
+
+.topbar,
+.tabbar,
+.standing,
+.modal,
+#toast {
+  background: var(--rd-glass);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* --------------------------------------------------------------------------
+   R3. Topplinje: tittel i midten, tilbake som en glassknapp.
+   -------------------------------------------------------------------------- */
+
+.topbar {
+  border-bottom: 0.5px solid var(--rd-hairline);
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset;
+  justify-content: center;
+  padding: 0 var(--s2);
+  padding-top: env(safe-area-inset-top);
+}
+
+.topbar h1 {
+  font-size: 1.0625rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  max-width: calc(100% - 128px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#tilbake {
+  position: absolute;
+  left: var(--s2);
+  bottom: 4px;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  font-size: 0;
+  color: var(--rd-primary-ink);
+  background: transparent;
+}
+#tilbake::before {
+  content: "";
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: var(--rd-control) center / 18px 18px no-repeat;
+  background-image: var(--rd-chevron-left);
+  box-shadow: var(--rd-control-shadow);
+}
+#tilbake:hover { background: transparent; }
+#tilbake:active::before { transform: scale(0.92); }
+
+/* --------------------------------------------------------------------------
+   R4. Bunnmeny: svevende glasskapsel, slik som i iOS 26.
+   -------------------------------------------------------------------------- */
+
+.tabbar {
+  left: 50%;
+  right: auto;
+  width: min(calc(100% - 24px), 420px);
+  transform: translateX(-50%);
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  padding: 6px;
+  gap: 4px;
+  border: 0.5px solid var(--rd-hairline);
+  border-top: 0.5px solid var(--rd-hairline);
+  border-radius: 32px;
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset, var(--rd-float-shadow);
+}
+
+.tabbar button {
+  position: relative;
+  min-height: 54px;
+  padding: 6px 4px 5px;
+  gap: 3px;
+  border-radius: 26px;
+  color: var(--ink-2);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.tabbar button[aria-current="true"] {
+  color: var(--rd-tab-active-ink);
+  background: var(--rd-tab-active-bg);
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset;
+}
+.tabbar .tab-icon { display: block; width: 24px; height: 24px; font-size: 0; }
+.tabbar .tab-icon svg { display: block; width: 24px; height: 24px; }
+
+main { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+
+#toast {
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  color: var(--ink);
+  border: 0.5px solid var(--rd-hairline);
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset, var(--rd-float-shadow);
+}
+
+/* --------------------------------------------------------------------------
+   R5. Innholdsflater
+   -------------------------------------------------------------------------- */
+
+.card,
+.tile,
+.round-card,
+.list-row,
+.result-row,
+.keyfigure,
+.pick-card,
+.avatar-option {
+  background: var(--surface-1);
+  border: 0.5px solid var(--rd-card-border);
+  box-shadow: var(--rd-card-shadow);
+}
+
+.card { border-radius: 24px; }
+.tile, .round-card { border-radius: 22px; }
+.list-row, .result-row, .keyfigure { border-radius: 18px; }
+
+button.tile:hover, button.round-card:hover, button.list-row:hover { background: var(--surface-1); }
+button.tile:active, button.round-card:active, button.list-row:active,
+.pick-card:active, .avatar-option:active { transform: scale(0.985); }
+.tile, .round-card, .list-row, .pick-card, .avatar-option { transition: transform 120ms ease; }
+
+/* Fliser på hjemskjermen */
+.tile { min-height: 84px; padding: var(--s4); gap: 4px; align-content: end; }
+.tile-title { font-size: 1.0625rem; font-weight: 750; letter-spacing: -0.01em; }
+.tile-sub { color: var(--ink-3); }
+
+/* Pågående runde: kortet løftes fram som et grønt «hero»-kort. */
+.card-accent {
+  position: relative;
+  overflow: hidden;
+  color: var(--rd-hero-ink);
+  background: var(--rd-hero-bg);
+  border: 0.5px solid var(--rd-hero-border);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, var(--rd-hero-shadow);
+  display: grid;
+  gap: var(--s2);
+}
+.card-accent::after {
+  /* Et flagg på green, tegnet i CSS, som et diskré motiv i hjørnet. */
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: -4px;
+  width: 96px;
+  height: 96px;
+  background: var(--rd-hero-motif) center / contain no-repeat;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.card-accent > * { position: relative; z-index: 1; }
+.card-accent h2 { font-size: 1.5rem; padding-right: 64px; }
+.card-accent .label { color: var(--rd-hero-ink-2); }
+.card-accent .muted { color: var(--rd-hero-ink-2); }
+.card-accent .row.gap { margin-top: var(--s2); }
+.card-accent .btn-primary {
+  background: var(--rd-hero-btn-bg);
+  color: var(--rd-hero-btn-ink);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+.card-accent .btn-ghost { color: var(--rd-hero-ink); }
+.card-accent .btn-ghost:hover { background: rgba(255, 255, 255, 0.14); color: var(--rd-hero-ink); }
+
+/* Rundekort */
+.round-card { padding: var(--s4); gap: 4px; }
+.round-card-top { justify-content: space-between; }
+.round-card-date { color: var(--ink-3); font-weight: 600; }
+.round-card-course { font-size: 1.1875rem; letter-spacing: -0.015em; }
+.round-card-players { color: var(--ink-2); }
+
+.section-head h2 { font-size: 1.375rem; }
+
+/* Tomtilstand og melding */
+.empty {
+  background: var(--rd-soft);
+  border: 1px dashed var(--rd-card-border-strong);
+  border-radius: 22px;
+}
+.notice {
+  border-left: none;
+  border-radius: 20px;
+  background: var(--rd-sand-soft);
+  border: 0.5px solid var(--rd-sand-border);
+  box-shadow: var(--rd-card-shadow);
+}
+
+/* --------------------------------------------------------------------------
+   R6. Knapper
+   -------------------------------------------------------------------------- */
+
+.btn { font-weight: 700; letter-spacing: -0.005em; transition: transform 100ms ease, box-shadow 160ms ease, background-color 160ms ease; }
+.btn:active { transform: scale(0.965); }
+
+.btn-primary {
+  background: var(--rd-primary-bg);
+  color: var(--rd-primary-on);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 -1px 0 rgba(0, 0, 0, 0.12) inset, var(--rd-primary-shadow);
+}
+.btn-primary:hover { background: var(--rd-primary-bg); filter: brightness(1.04); }
+
+.btn-secondary {
+  background: var(--rd-control);
+  color: var(--ink);
+  border: 0.5px solid var(--rd-card-border-strong);
+  box-shadow: var(--rd-control-shadow);
+}
+.btn-secondary:hover { background: var(--rd-control); }
+
+.btn-ghost { color: var(--rd-primary-ink); }
+.btn-ghost:hover { background: var(--rd-soft); color: var(--rd-primary-ink); }
+
+.btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border: 0.5px solid var(--rd-danger-border);
+}
+
+.btn-lg { min-height: 58px; font-size: 1.125rem; }
+.btn-sm { min-height: 40px; }
+
+/* --------------------------------------------------------------------------
+   R7. Segmentkontroll og brikker: glasskapsler
+   -------------------------------------------------------------------------- */
+
+.segmented {
+  background: var(--rd-track);
+  border: 0.5px solid var(--rd-hairline);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) inset;
+}
+.segmented button { min-height: 40px; color: var(--ink-2); transition: background-color 160ms ease, color 160ms ease; }
+.segmented button[aria-pressed="true"] {
+  background: var(--rd-thumb);
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset, 0 2px 8px rgba(0, 0, 0, 0.12), 0 0 0 0.5px var(--rd-hairline);
+}
+
+.chip {
+  background: var(--rd-control);
+  border: 0.5px solid var(--rd-card-border-strong);
+  color: var(--ink);
+  box-shadow: var(--rd-control-shadow);
+}
+.chip[aria-pressed="true"] {
+  background: var(--rd-primary-bg);
+  border-color: transparent;
+  color: var(--rd-primary-on);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, var(--rd-primary-shadow);
+}
+.chip-sm { min-height: 36px; }
+
+/* --------------------------------------------------------------------------
+   R8. Merker
+   -------------------------------------------------------------------------- */
+
+.badge { border: 0.5px solid currentColor; padding: 3px 10px; font-weight: 700; }
+.badge-solo { color: var(--ink-2); background: var(--rd-soft); border-color: var(--rd-card-border-strong); }
+.badge-birdie { color: var(--good); background: var(--good-soft); }
+.badge-eagle  { color: var(--rd-gold); background: var(--rd-gold-soft); }
+.badge-hio    { color: var(--rd-flag); background: var(--rd-flag-soft); }
+.badge-avbrutt { color: var(--ink-2); background: var(--rd-soft); }
+
+/* --------------------------------------------------------------------------
+   R9. Felt
+   -------------------------------------------------------------------------- */
+
+.field, .par-input {
+  background: var(--rd-field);
+  border: 0.5px solid var(--rd-card-border-strong);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) inset;
+}
+.field { min-height: 50px; padding: 0 var(--s4); }
+
+/* --------------------------------------------------------------------------
+   R10. Spillervalg og avatarer
+   -------------------------------------------------------------------------- */
+
+.pick-card, .avatar-option { border-radius: 20px; border-width: 0.5px; }
+.pick-card[aria-pressed="true"] {
+  background: var(--surface-1);
+  border-color: transparent;
+  box-shadow: 0 0 0 2.5px var(--player-color, var(--rd-primary-ink)), var(--rd-card-shadow);
+}
+.avatar-option[aria-pressed="true"] {
+  background: var(--good-soft);
+  border-color: transparent;
+  box-shadow: 0 0 0 2.5px var(--rd-primary-ink), var(--rd-card-shadow);
+}
+.avatar-ring > .avatar { border-color: var(--surface-1); }
+
+/* --------------------------------------------------------------------------
+   R11. Registrering hull for hull
+   -------------------------------------------------------------------------- */
+
+.standing {
+  border-bottom: 0.5px solid var(--rd-hairline);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+.standing::-webkit-scrollbar { display: none; }
+.standing-item {
+  background: var(--rd-control);
+  border: 0.5px solid var(--rd-card-border);
+  box-shadow: var(--rd-control-shadow);
+  padding-right: 14px;
+}
+.standing-item.is-leader {
+  background: var(--good-soft);
+  border-color: var(--good);
+}
+.standing-points { font-size: 1.0625rem; }
+
+.hole-title { font-size: 2rem; letter-spacing: -0.03em; }
+.hole-head { align-items: center; row-gap: 4px; }
+.hole-head .badge-solo {
+  color: var(--rd-sand-ink);
+  background: var(--rd-sand-soft);
+  border-color: var(--rd-sand-border);
+}
+
+.stroke-row { border-top: 0.5px solid var(--rd-hairline); padding: 10px 0; }
+
+.stepper button {
+  width: 46px;
+  height: 46px;
+  border: 0.5px solid var(--rd-card-border-strong);
+  background: var(--rd-control);
+  color: var(--rd-primary-ink);
+  font-size: 1.5rem;
+  box-shadow: var(--rd-control-shadow);
+  transition: transform 90ms ease;
+}
+.stepper button:hover { background: var(--rd-control); }
+.stepper button:active { transform: scale(0.9); }
+
+.stroke-input, .stepper input {
+  border-radius: 16px;
+  background: var(--rd-field);
+  border: 0.5px solid var(--rd-card-border-strong);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) inset;
+  color: var(--ink);
+}
+
+.hole-result {
+  border-radius: 16px;
+  background: var(--rd-soft);
+  border: 0.5px solid var(--rd-hairline);
+}
+.hole-result.is-done { background: var(--good-soft); border-color: transparent; }
+
+/* --------------------------------------------------------------------------
+   R12. Scorekort
+   Hullkolonnen er bred nok til «Poeng» og «Mot par», og summeradene
+   får brekke over to linjer heller enn å gå over streken.
+   -------------------------------------------------------------------------- */
+
+.card-flush { border-radius: 22px; }
+
+.scoreboard th, .scoreboard td { border-bottom: 0.5px solid var(--rd-hairline); }
+.scoreboard tbody tr { background: var(--surface-1); }
+
+.scorecard .sc-hull {
+  width: 4rem;
+  padding-left: var(--s3);
+  padding-right: 4px;
+}
+.scorecard .sc-par { width: 2.25rem; }
+.scorecard thead th { background: var(--surface-1); padding-bottom: var(--s2); }
+/* Navn i hodet får to linjer før de kuttes, så «Ola Nordmann» vises helt. */
+.scorecard .sc-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.6875rem;
+  letter-spacing: -0.005em;
+  white-space: normal;
+  overflow-wrap: normal;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.scorecard tfoot th.sc-hull {
+  /* Brekker bare mellom ord («Mot / par»), aldri inne i et ord. */
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  font-size: 0.75rem;
+  font-weight: 750;
+  line-height: 1.15;
+  color: var(--ink-2);
+}
+.scorecard tfoot th, .scorecard tfoot td {
+  background: var(--rd-soft-solid);
+  border-top: 0.5px solid var(--rd-card-border-strong);
+}
+.scorecard tfoot tr:first-child th, .scorecard tfoot tr:first-child td { border-top: 1.5px solid var(--rd-card-border-strong); }
+.scorecard tfoot td.total { font-size: 1.0625rem; }
+
+.scoreboard.scorecard tbody tr.is-now { background: var(--rd-now-bg); }
+.scorecard .hole-link { min-width: 40px; min-height: 40px; border-radius: 12px; }
+.hole-link.is-now {
+  background: var(--rd-flag);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--rd-flag-glow);
+}
+
+.scorecard td .sb-strokes { font-size: 1rem; font-weight: 700; }
+.scoreboard td .sb-points { font-weight: 600; }
+
+/* Merker rundt slagene: sirkel for birdie, dobbel sirkel for eagle eller
+   bedre, firkant for bogey og dobbel firkant for dobbeltbogey eller verre.
+   Formen bærer betydningen, fargen er bare en ekstra hjelp. */
+.scoreboard td .sb-strokes.sc-mark,
+.scorecard-legend .sc-mark {
+  display: grid;
+  place-items: center;
+  width: 1.9em;
+  height: 1.9em;
+  margin: 2px auto;
+  line-height: 1;
+  border: 1.5px solid currentColor;
+}
+.sc-mark.sc-birdie { border-radius: 50%; color: var(--rd-under); }
+.sc-mark.sc-eagle {
+  border-radius: 50%;
+  color: var(--rd-under);
+  outline: 1.5px solid currentColor;
+  outline-offset: 2px;
+}
+.sc-mark.sc-bogey { border-radius: 3px; color: var(--rd-over); }
+.sc-mark.sc-dobbel {
+  border-radius: 3px;
+  color: var(--rd-over);
+  outline: 1.5px solid currentColor;
+  outline-offset: 2px;
+}
+.scoreboard td .sb-strokes.sc-eagle,
+.scoreboard td .sb-strokes.sc-dobbel { margin: 5px auto; }
+/* Cellen skal ikke bli smalere enn merket. */
+.scorecard td { min-width: 2.6em; }
+
+.scorecard caption.scorecard-caption {
+  caption-side: bottom;
+  padding: var(--s3) var(--s3) var(--s3);
+  text-align: left;
+  background: var(--rd-soft-solid);
+  border-top: 0.5px solid var(--rd-hairline);
+}
+.scorecard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+.scorecard-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.scorecard-legend .sc-mark { width: 1.7em; height: 1.7em; margin: 4px; font-size: 0.75rem; font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   R13. Statistikk
+   -------------------------------------------------------------------------- */
+
+.stat-table th, .stat-table td { border-bottom: 0.5px solid var(--rd-hairline); }
+.stat-table th:first-child, .stat-table td:first-child { background: var(--surface-1); }
+
+.podium-block {
+  background: var(--rd-soft-solid);
+  border: 0.5px solid var(--rd-card-border);
+  border-bottom: none;
+  border-radius: 16px 16px 4px 4px;
+  padding: var(--s2) 4px;
+}
+.pall-1 {
+  background: var(--rd-hero-bg);
+  color: var(--rd-hero-ink);
+  border-color: transparent;
+  min-height: 96px;
+}
+.pall-1 .podium-points { color: var(--rd-hero-ink-2); }
+.pall-2 { min-height: 72px; }
+.pall-3 { min-height: 56px; }
+
+.keyfigure { align-content: start; }
+.keyfigure-value { letter-spacing: -0.02em; }
+
+.hole-bar { border-radius: 12px; }
+.hole-bar:nth-child(odd) { background: var(--rd-soft); }
+.hole-bar-track { background: var(--rd-track); }
+.hole-bar-fill.is-under { background: var(--rd-under); }
+.hole-bar-fill.is-over  { background: var(--rd-over); }
+
+/* --------------------------------------------------------------------------
+   R14. Dialog
+   -------------------------------------------------------------------------- */
+
+.modal-backdrop {
+  background: var(--rd-scrim);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.modal {
+  border-radius: 28px;
+  border: 0.5px solid var(--rd-hairline);
+  box-shadow: 0 1px 0 var(--rd-glass-edge) inset, var(--rd-float-shadow);
+  background: var(--rd-glass-strong);
+}
+.modal-actions .btn { flex: 1 1 auto; }
+
+/* --------------------------------------------------------------------------
+   R15. Smale telefoner
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 400px) {
+  .scorecard .sc-hull { width: 3.75rem; padding-left: 10px; }
+  .scorecard .sc-par { width: 2rem; }
+  .card-accent h2 { font-size: 1.375rem; }
+}
+
+/* Ikonene fylles når fanen er valgt, slik som i iOS. */
+.tabbar .tab-fill { fill: none; transition: fill 160ms ease; }
+.tabbar button[aria-current="true"] .tab-fill { fill: currentColor; }
+
+/* --------------------------------------------------------------------------
+   R16. Links: glass også på innholdskortene
+   Kortene er som et scorekort i papir som ligger oppå banen. Litt
+   gjennomsiktige og uskarpe bak, men tette nok til at tallene står klart.
+   -------------------------------------------------------------------------- */
+
+:root[data-theme="links"] .card,
+:root[data-theme="links"] .tile,
+:root[data-theme="links"] .round-card,
+:root[data-theme="links"] .list-row,
+:root[data-theme="links"] .result-row,
+:root[data-theme="links"] .keyfigure,
+:root[data-theme="links"] .pick-card,
+:root[data-theme="links"] .avatar-option {
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Tabellrader og faste kolonner er nesten tette. Da skinner ikke rader som
+   rulles sidelengs gjennom navnekolonnen. */
+:root[data-theme="links"] .scoreboard tbody tr,
+:root[data-theme="links"] .scorecard thead th,
+:root[data-theme="links"] .stat-table th:first-child,
+:root[data-theme="links"] .stat-table td:first-child { background: rgba(255, 253, 247, 0.92); }
+:root[data-theme="links"] .scoreboard tbody tr[data-leader="true"] { background: #e3efe6; }
+:root[data-theme="links"] .scorecard thead th.is-leader { background: #e3efe6; }
+:root[data-theme="links"] .scoreboard.scorecard tbody tr.is-now { background: var(--rd-now-bg); }
+:root[data-theme="links"] .hole-result { background: rgba(255, 253, 247, 0.55); }
+:root[data-theme="links"] .hole-result.is-done,
+:root[data-theme="links"] .result-row.is-winner,
+:root[data-theme="links"] .standing-item.is-leader { background: rgba(222, 240, 228, 0.88); }
+
+/* Mindre gjennomsiktighet gjelder også kortene her. */
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-theme="links"] .card,
+  :root[data-theme="links"] .tile,
+  :root[data-theme="links"] .round-card,
+  :root[data-theme="links"] .list-row,
+  :root[data-theme="links"] .result-row,
+  :root[data-theme="links"] .keyfigure,
+  :root[data-theme="links"] .pick-card,
+  :root[data-theme="links"] .avatar-option {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #fffdf7;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   R17. Valg av utseende i Innstillinger: fire kort med en liten prøve av
+   hvert tema. Prøvene har faste farger, så de viser temaet uansett hvilket
+   som er i bruk. Valgt kort får ring og hake, ikke bare farge.
+   -------------------------------------------------------------------------- */
+
+.tema-valg {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tema-kort {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  min-height: var(--tap-min);
+  padding: 8px 8px 10px;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--rd-control);
+  border: 0.5px solid var(--rd-card-border-strong);
+  border-radius: 18px;
+  box-shadow: var(--rd-control-shadow);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 160ms ease;
+}
+.tema-kort:active { transform: scale(0.97); }
+.tema-kort[aria-pressed="true"] {
+  border-color: transparent;
+  box-shadow: 0 0 0 2.5px var(--rd-primary-ink), var(--rd-control-shadow);
+}
+.tema-kort[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-full);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 13px 13px no-repeat, var(--rd-primary-ink);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.tema-navn { margin-top: 6px; font-weight: 750; line-height: 1.2; }
+.tema-sub { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.3; }
+
+.tema-prove {
+  position: relative;
+  display: block;
+  height: 58px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.14) inset;
+}
+.tema-prove::before,
+.tema-prove::after { content: ""; position: absolute; left: 10px; }
+/* Et lite kort */
+.tema-prove::before { top: 10px; right: 34px; height: 20px; border-radius: 6px; }
+/* En knapp */
+.tema-prove::after { bottom: 9px; width: 36px; height: 11px; border-radius: 6px; }
+
+.tema-prove-lys { background: linear-gradient(180deg, #cfe3ec 0%, #eaf1e8 50%, #d2e7d1 100%); }
+.tema-prove-lys::before { background: #ffffff; box-shadow: 0 1px 3px rgba(18, 52, 32, 0.15); }
+.tema-prove-lys::after { background: #1f7a4c; }
+
+.tema-prove-mork { background: linear-gradient(180deg, #16301f 0%, #07110c 100%); }
+.tema-prove-mork::before { background: #22392c; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.18); }
+.tema-prove-mork::after { background: #e9c46a; }
+
+.tema-prove-links { background: linear-gradient(180deg, #a8d0e6 0%, #f1e4c4 52%, #a9d0b0 100%); }
+.tema-prove-links::before { background: rgba(255, 253, 247, 0.85); box-shadow: 0 1px 3px rgba(60, 50, 20, 0.18); }
+.tema-prove-links::after { background: #0f6e5a; }
+
+.tema-prove-auto { background: linear-gradient(120deg, #e3eee6 0 50%, #0b1a12 50% 100%); }
+.tema-prove-auto::before { background: linear-gradient(120deg, #ffffff 0 50%, #1b2e23 50% 100%); }
+.tema-prove-auto::after { background: linear-gradient(90deg, #1f7a4c 0 50%, #3fb87a 50% 100%); }
+
+/* --------------------------------------------------------------------------
+   R18. Avatarene i Klubbhus: landskapet bak dyret får kveldsfarger, så de
+   lyse sirklene ikke lyser mot den mørke bakgrunnen. Fairway og Links
+   bruker dagfargene som ligger i tegningene.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="links"]) .avatar .av-himmel { fill: #20404a; }
+  :root:not([data-theme="light"]):not([data-theme="links"]) .avatar .av-sand   { fill: #5e5238; }
+  :root:not([data-theme="light"]):not([data-theme="links"]) .avatar .av-gress  { fill: #2c6a50; }
+}
+:root[data-theme="dark"] .avatar .av-himmel { fill: #20404a; }
+:root[data-theme="dark"] .avatar .av-sand   { fill: #5e5238; }
+:root[data-theme="dark"] .avatar .av-gress  { fill: #2c6a50; }
+
+/* --------------------------------------------------------------------------
+   R19. Bunnmenyen skjules mens tastaturet er oppe
+   app.js setter klassen tastatur-ute på body når man skriver i et felt på
+   telefonen. Menyen glir ned og ut, og blir usynlig og utilgjengelig til
+   feltet slippes. Ønsker telefonen mindre bevegelse, forsvinner den uten å
+   gli (regelen i tokens.css korter ned alle overganger).
+   -------------------------------------------------------------------------- */
+
+.tabbar {
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 180ms ease, visibility 0s linear 0s;
+}
+body.tastatur-ute .tabbar {
+  transform: translate(-50%, calc(100% + 24px + env(safe-area-inset-bottom)));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 220ms cubic-bezier(0.4, 0, 1, 1), opacity 160ms ease, visibility 0s linear 220ms;
+}

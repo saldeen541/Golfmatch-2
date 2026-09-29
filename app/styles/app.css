@@ -1,0 +1,845 @@
+/* ==========================================================================
+   Golfapp - layout og skjermspesifikke komponenter
+   Bygger på tokens.css. Mobil først.
+   ========================================================================== */
+
+/* Skjulte elementer skal alltid være borte, også når en annen regel
+   gir dem display: flex eller grid. */
+[hidden] { display: none !important; }
+
+html, body { height: 100%; }
+
+/* Ingenting skal kunne gjøre siden bredere enn skjermen. Brede tabeller
+   ruller inne i sin egen boks (.scroll), ikke hele siden. «clip» lager ikke
+   en rulleboks, så klistrede elementer virker som før. */
+html, body { overflow-x: clip; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* --------------------------------------------------------------------------
+   Topplinje
+   -------------------------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  /* Fast høyde, slik at stillingen som klistrer seg under den alltid
+     treffer kanten nøyaktig. */
+  height: calc(56px + env(safe-area-inset-top));
+  padding: 0 var(--s3) 0 var(--s2);
+  padding-top: env(safe-area-inset-top);
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar h1 {
+  font-size: var(--fs-lg);
+  margin: 0;
+}
+
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: none;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.iconbtn:hover { background: var(--surface-2); }
+
+/* --------------------------------------------------------------------------
+   Innhold
+   -------------------------------------------------------------------------- */
+
+main {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  /* Plass nederst til bunnmenyen, som ligger fast over innholdet. */
+  padding: var(--s4) var(--s4) calc(80px + env(safe-area-inset-bottom));
+}
+
+/* minmax(0, 1fr) gjør at innholdet i en stabel aldri kan tvinge kolonnen
+   bredere enn skjermen. Uten dette strekker en bred tabell hele siden ut,
+   og telefonen zoomer ut for å få plass. */
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s4);
+  align-content: start;
+}
+.row { display: flex; align-items: center; }
+.row.gap { gap: var(--s2); flex-wrap: wrap; }
+.center { text-align: center; }
+
+.card-accent { border-color: var(--accent); }
+
+.notice {
+  display: grid;
+  gap: var(--s3);
+  justify-items: start;
+  padding: var(--s4);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+.notice p { margin: 0; }
+
+.warn-text { color: var(--danger); font-weight: 650; }
+
+.empty {
+  display: grid;
+  gap: var(--s2);
+  justify-items: center;
+  text-align: center;
+  padding: var(--s6) var(--s4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  color: var(--ink-2);
+}
+.empty p { margin: 0; }
+.empty-title { font-weight: 700; color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   Bunnmeny
+   -------------------------------------------------------------------------- */
+
+/* Bunnmenyen skal alltid ligge nederst på skjermen, uansett hvor kort
+   innholdet er. Derfor fast plassering, ikke sticky. */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--surface-1);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tabbar button {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  min-height: 56px;
+  padding: var(--s2) 0;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  cursor: pointer;
+}
+.tabbar button[aria-current="true"] { color: var(--accent); }
+.tabbar .tab-icon { font-size: 1.15rem; line-height: 1; }
+
+/* --------------------------------------------------------------------------
+   Felt
+   -------------------------------------------------------------------------- */
+
+.field {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0 var(--s3);
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+}
+.field::placeholder { color: var(--ink-3); }
+
+/* --------------------------------------------------------------------------
+   Lister
+   -------------------------------------------------------------------------- */
+
+.list { display: grid; gap: var(--s2); }
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--s2) var(--s3);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+div.list-row { cursor: default; }
+button.list-row:hover { background: var(--surface-2); }
+
+.list-row-main { flex: 1; display: grid; }
+.list-row-title { font-weight: 650; }
+.list-row-sub { font-size: var(--fs-sm); }
+.list-row-chevron { color: var(--ink-3); font-size: 1.4rem; line-height: 1; }
+
+.btn-sm { min-height: 36px; padding: 0 var(--s3); font-size: var(--fs-sm); }
+
+/* --------------------------------------------------------------------------
+   Fliser på hjemskjermen
+   -------------------------------------------------------------------------- */
+
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+
+.tile {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  min-height: 72px;
+  padding: var(--s4);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+}
+.tile:hover { background: var(--surface-2); }
+.tile-title { font-weight: 700; }
+.tile-sub { font-size: var(--fs-sm); color: var(--ink-2); }
+
+/* --------------------------------------------------------------------------
+   Rundekort
+   -------------------------------------------------------------------------- */
+
+.round-card {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: var(--s4);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+}
+.round-card:hover { background: var(--surface-2); }
+.round-card-top { display: flex; align-items: center; gap: var(--s2); }
+.round-card-date { font-size: var(--fs-sm); color: var(--ink-2); }
+.round-card-course { font-size: var(--fs-lg); font-weight: 700; }
+.round-card-players { font-size: var(--fs-sm); }
+
+.badge-avbrutt { color: var(--ink-2); background: var(--surface-2); }
+
+/* --------------------------------------------------------------------------
+   Avatarvelger
+   -------------------------------------------------------------------------- */
+
+.avatar-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: var(--s2);
+}
+
+.avatar-option {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  padding: var(--s2) 4px;
+  background: var(--surface-1);
+  border: 2px solid var(--border);
+  border-radius: var(--r-md);
+  font: inherit;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.avatar-option[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 700;
+}
+.avatar-option-name { line-height: 1.2; }
+
+/* --------------------------------------------------------------------------
+   Spillervelger i rundeoppsettet
+   -------------------------------------------------------------------------- */
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--s2);
+}
+
+.pick-card {
+  display: grid;
+  gap: var(--s2);
+  justify-items: center;
+  padding: var(--s3) var(--s2);
+  background: var(--surface-1);
+  border: 2px solid var(--border);
+  border-radius: var(--r-lg);
+  font: inherit;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.pick-card[aria-pressed="true"] {
+  border-color: var(--player-color, var(--accent));
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.pick-avatar {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: var(--r-full);
+  background: var(--player-color, transparent);
+}
+.pick-name { font-weight: 650; font-size: var(--fs-sm); }
+
+/* --------------------------------------------------------------------------
+   Banebrikker
+   -------------------------------------------------------------------------- */
+
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--s2); }
+
+.chip {
+  min-height: 40px;
+  padding: 0 var(--s4);
+  background: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-full);
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink-on-accent);
+}
+
+/* --------------------------------------------------------------------------
+   Par per hull
+   -------------------------------------------------------------------------- */
+
+.par-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: var(--s2);
+}
+
+.par-cell { display: grid; gap: 2px; justify-items: center; }
+.par-num { font-size: var(--fs-xs); color: var(--ink-3); font-weight: 650; }
+
+.par-input {
+  width: 100%;
+  height: 44px;
+  text-align: center;
+  font: inherit;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  -moz-appearance: textfield;
+}
+.par-input::-webkit-outer-spin-button,
+.par-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* --------------------------------------------------------------------------
+   Match: stilling, registrering og scoreboard
+   -------------------------------------------------------------------------- */
+
+/* Stillingen ligger klistret under topplinjen, slik at den alltid er synlig. */
+.standing {
+  position: sticky;
+  top: calc(56px + env(safe-area-inset-top));
+  z-index: 10;
+  display: flex;
+  gap: var(--s2);
+  overflow-x: auto;
+  margin: calc(var(--s4) * -1) calc(var(--s4) * -1) 0;
+  padding: var(--s2) var(--s4);
+  background: var(--surface-0);
+  border-bottom: 1px solid var(--border);
+  -webkit-overflow-scrolling: touch;
+}
+
+.standing-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 4px var(--s3) 4px 4px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+}
+.standing-item.is-leader { border-color: var(--good); background: var(--good-soft); }
+.standing-name { font-size: var(--fs-sm); font-weight: 650; }
+.standing-points { font-weight: 750; }
+
+.hole-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+}
+.hole-title { font-size: var(--fs-xl); font-weight: 750; }
+.hole-of { font-size: var(--fs-sm); }
+
+.stroke-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  padding: var(--s2) 0;
+  border-top: 1px solid var(--border);
+}
+.stroke-row:first-of-type { border-top: none; }
+/* Navnet tar plassen som er igjen og brekker heller enn å dytte
+   slagtelleren ut av skjermen. */
+.stroke-name {
+  flex: 1 1 5rem;
+  min-width: 0;
+  font-weight: 650;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.stroke-row .stepper { margin-left: auto; }
+
+.stroke-input {
+  width: 64px;
+  height: var(--tap-min);
+  text-align: center;
+  font: inherit;
+  font-size: var(--fs-xl);
+  font-weight: 750;
+  color: var(--ink);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  -moz-appearance: textfield;
+}
+.stroke-input::-webkit-outer-spin-button,
+.stroke-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.hole-result {
+  margin: 0;
+  padding: var(--s3) var(--s4);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+.hole-result.is-done {
+  background: var(--good-soft);
+  color: var(--good);
+  font-weight: 700;
+}
+
+.hole-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+
+.hole-link {
+  min-width: 28px;
+  padding: 2px 4px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  cursor: pointer;
+}
+.hole-link.is-now { background: var(--accent); color: var(--ink-on-accent); }
+
+.sb-player { display: inline-flex; align-items: center; gap: var(--s2); }
+.scoreboard td .sb-strokes { display: block; font-weight: 650; }
+.scoreboard td .sb-points {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  min-height: 1em;
+}
+.scoreboard td .sb-points.is-win { color: var(--good); font-weight: 750; }
+
+/* --------------------------------------------------------------------------
+   Scramble
+   -------------------------------------------------------------------------- */
+
+.stack-tight { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+
+/* Brede tabeller ruller sidelengs inne i kortet sitt. */
+.scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* Kort uten indre luft, for tabeller som skal gå helt ut i kanten. */
+.card-flush { padding: 0; overflow: hidden; }
+.card-flush.scroll { overflow-x: auto; }
+
+/* --------------------------------------------------------------------------
+   Scorekort: hullene nedover, spillerne bortover. Aldri mer enn fire
+   scorekolonner, så det får plass i bredden på alle telefoner.
+   -------------------------------------------------------------------------- */
+
+.scorecard { table-layout: fixed; min-width: 100%; }
+.scorecard th, .scorecard td { padding: 6px 2px; }
+.scorecard .sc-hull { width: 3.25rem; padding-left: var(--s3); text-align: left; }
+.scorecard .sc-par { width: 2.5rem; color: var(--ink-3); font-size: var(--fs-sm); font-weight: 650; }
+.scorecard thead th {
+  text-transform: none;
+  letter-spacing: 0;
+  vertical-align: bottom;
+  padding-top: var(--s3);
+  background: var(--surface-1);
+}
+.scorecard thead th.is-leader { background: var(--good-soft); }
+.sc-head { display: grid; justify-items: center; gap: 4px; min-width: 0; }
+.sc-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink);
+}
+.scorecard tbody th { font-weight: 700; color: var(--ink-2); }
+.scoreboard.scorecard tbody tr.is-now { background: var(--accent-soft); }
+.scorecard tfoot th, .scorecard tfoot td {
+  border-top: 2px solid var(--border-strong);
+  border-bottom: none;
+  background: var(--surface-2);
+}
+.scorecard tfoot th { font-size: var(--fs-sm); font-weight: 700; color: var(--ink-2); }
+.scorecard tfoot td.total { font-size: var(--fs-md); box-shadow: none; }
+.scorecard tfoot td.is-leader { color: var(--good); }
+.scorecard .hole-link {
+  min-width: 40px;
+  min-height: 40px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.scorecard .hole-link.is-now { color: var(--ink-on-accent); }
+.small { font-size: var(--fs-sm); }
+
+.team-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--border);
+}
+.team-name { font-weight: 700; }
+
+.chip-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--s3) 0 4px;
+}
+
+.standing-par { font-size: var(--fs-xs); }
+
+/* --------------------------------------------------------------------------
+   Resultat
+   -------------------------------------------------------------------------- */
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+.result-row.is-winner { border-color: var(--good); background: var(--good-soft); }
+.result-place { width: 28px; font-weight: 750; color: var(--ink-2); }
+.result-name { flex: 1; display: grid; font-weight: 650; }
+.result-shared { font-size: var(--fs-xs); font-weight: 400; }
+.result-points { font-size: var(--fs-lg); font-weight: 750; }
+
+/* --------------------------------------------------------------------------
+   Statistikk
+   -------------------------------------------------------------------------- */
+
+.chip-sm { min-height: 34px; padding: 0 var(--s3); font-size: var(--fs-sm); }
+
+.scoreboard .par-rad td {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  font-weight: 650;
+  background: var(--surface-2);
+}
+
+.klikkbar { cursor: pointer; }
+.klikkbar:hover td { background: var(--surface-2); }
+
+.team-avatars { display: flex; justify-content: center; gap: -8px; }
+.team-avatars > * { margin-left: -10px; border: 2px solid var(--surface-1); border-radius: var(--r-full); }
+.team-avatars > *:first-child { margin-left: 0; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.stat-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+
+.stat-table th, .stat-table td {
+  padding: var(--s2);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.stat-table thead th {
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.stat-table th:first-child,
+.stat-table td:first-child {
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  left: 0;
+  background: var(--surface-1);
+}
+.stat-table tbody tr:last-child td { border-bottom: none; }
+
+/* Første kolonne får brekke over to linjer, slik at tabellen får plass i
+   bredden i stedet for å måtte rulles sidelengs. */
+.stat-table td:first-child { white-space: normal; overflow-wrap: break-word; }
+.stat-table .sb-player { flex-wrap: wrap; gap: 4px 6px; }
+.stat-table .sb-player > span:last-child { min-width: 0; }
+
+.stat-points { line-height: 1.15; }
+.stat-points strong { font-size: var(--fs-lg); font-weight: 750; }
+.stat-sub { display: block; font-size: var(--fs-xs); color: var(--ink-3); font-weight: 400; }
+
+/* --------------------------------------------------------------------------
+   Seierspall
+   -------------------------------------------------------------------------- */
+
+.podium {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s2);
+  align-items: end;
+}
+
+.podium-slot { display: grid; gap: 4px; justify-items: center; text-align: center; }
+.podium-name { font-size: var(--fs-sm); font-weight: 650; }
+
+.podium-block {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  align-content: center;
+  width: 100%;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom: none;
+}
+.pall-1 { min-height: 88px; background: var(--good-soft); border-color: var(--good); }
+.pall-2 { min-height: 64px; }
+.pall-3 { min-height: 48px; }
+
+.podium-place { font-size: var(--fs-xl); font-weight: 750; line-height: 1; }
+.podium-points { font-size: var(--fs-xs); color: var(--ink-2); }
+
+/* --------------------------------------------------------------------------
+   Rundekort med score
+   -------------------------------------------------------------------------- */
+
+.round-card-score { display: flex; align-items: baseline; gap: var(--s2); flex-wrap: wrap; }
+.score-big { font-size: var(--fs-xl); font-weight: 750; }
+.score-par { font-size: var(--fs-sm); }
+
+/* --------------------------------------------------------------------------
+   Nøkkeltall og snitt per hull
+   -------------------------------------------------------------------------- */
+
+.keyfigures { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
+
+.keyfigure {
+  display: grid;
+  gap: 2px;
+  padding: var(--s3);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  text-align: center;
+}
+.keyfigure-label {
+  font-size: var(--fs-xs); font-weight: 650; color: var(--ink-3);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.keyfigure-value { font-size: var(--fs-xl); font-weight: 750; line-height: 1.1; }
+.keyfigure-sub { font-size: var(--fs-xs); color: var(--ink-3); }
+
+.hole-bars { display: grid; gap: 4px; }
+
+.hole-bar {
+  display: grid;
+  grid-template-columns: 24px 48px 1fr 48px;
+  align-items: center;
+  gap: var(--s2);
+  padding: 4px var(--s2);
+  border-radius: var(--r-sm);
+}
+.hole-bar:nth-child(odd) { background: var(--surface-2); }
+.hole-bar-nr { font-weight: 700; }
+.hole-bar-par { font-size: var(--fs-xs); }
+.hole-bar-track {
+  position: relative;
+  height: 12px;
+  background: var(--surface-3);
+  border-radius: var(--r-full);
+}
+
+.hole-bar-fill { position: absolute; top: 0; bottom: 0; border-radius: var(--r-full); }
+
+/* Uten par: vanlig stolpe fra venstre. */
+.hole-bar-fill.is-plain { left: 0; background: var(--border-strong); }
+
+/* Med par: stolpene vokser ut fra null i midten, under par til venstre og
+   over par til høyre. Tallet står alltid ved siden av, så fargen er aldri
+   det eneste som skiller dem. */
+.hole-bars.fra-null .hole-bar-zero {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--border-strong);
+}
+.hole-bar-fill.is-under {
+  right: 50%;
+  background: var(--good);
+  border-radius: var(--r-full) 0 0 var(--r-full);
+}
+.hole-bar-fill.is-over {
+  left: 50%;
+  background: var(--danger);
+  border-radius: 0 var(--r-full) var(--r-full) 0;
+}
+.hole-bar-value { font-size: var(--fs-sm); font-weight: 650; text-align: right; }
+
+/* --------------------------------------------------------------------------
+   Dialog
+   -------------------------------------------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--s4);
+  background: rgba(10, 18, 14, 0.5);
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: var(--s3);
+  padding: var(--s5);
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-3);
+}
+.modal p { margin: 0; }
+.modal-actions { display: flex; gap: var(--s2); justify-content: flex-end; flex-wrap: wrap; }
+
+/* --------------------------------------------------------------------------
+   Melding nederst
+   -------------------------------------------------------------------------- */
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  z-index: 60;
+  transform: translate(-50%, 8px);
+  max-width: min(90vw, 420px);
+  padding: var(--s3) var(--s4);
+  background: var(--ink);
+  color: var(--surface-0);
+  border-radius: var(--r-full);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  pointer-events: none;
+}
+#toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* --------------------------------------------------------------------------
+   Oppstart
+   -------------------------------------------------------------------------- */
+
+#laster {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+  padding: var(--s5);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+#app[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
+   Smale telefoner
+   Mindre luft rundt kortene gir registreringen mer plass, uten at tekst
+   eller knapper blir mindre.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 400px) {
+  main { padding-left: var(--s3); padding-right: var(--s3); }
+  .standing { margin-left: calc(var(--s3) * -1); margin-right: calc(var(--s3) * -1);
+              padding-left: var(--s3); padding-right: var(--s3); }
+  .card { padding: var(--s4); }
+  .card-flush { padding: 0; }
+  .stepper { gap: 6px; }
+  .stepper input { width: 56px; }
+  .card-tight.scroll { padding: var(--s2); }
+  .stat-table th, .stat-table td { padding: 6px 4px; }
+}

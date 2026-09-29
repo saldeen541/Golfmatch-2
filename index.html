@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Scoreapp for match play og scramble. All data ligger på denne enheten.">
+<!-- Appen laster ingenting utenfra. Denne regelen håndhever det. -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self' blob:; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
+<!-- UI-REDESIGN: statuslinjen følger lys og mørk modus. -->
+<meta name="theme-color" content="#eef3ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#08120d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- UI-REDESIGN: appen heter Golfmatch 2 i denne versjonen. -->
+<meta name="apple-mobile-web-app-title" content="Golfmatch 2">
+<title>Golfmatch 2</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="app/styles/tokens.css">
+<link rel="stylesheet" href="app/styles/app.css">
+<!-- UI-REDESIGN: alt nytt utseende ligger i denne filen, lastet sist. -->
+<link rel="stylesheet" href="app/styles/redesign.css">
+</head>
+<body>
+
+<p id="laster">Starter appen …</p>
+
+<div id="app" hidden>
+
+  <header class="topbar">
+    <button id="tilbake" class="iconbtn" type="button" aria-label="Tilbake" hidden>‹</button>
+    <h1 id="sidetittel">Golfmatch 2</h1>
+  </header>
+
+  <main id="innhold"></main>
+
+  <!-- UI-REDESIGN: ikonene i bunnmenyen er tegnet som SVG i stedet for tegn. -->
+  <nav class="tabbar" aria-label="Hovedmeny">
+    <button type="button" data-route="hjem" data-tab="hjem" aria-current="true">
+      <span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 19.5V3.5"/><path class="tab-fill" d="M8 4.2l9.5 3.3L8 10.8z"/><path d="M3 19.5c1.5-1.3 4-2 7-2s5.5.7 7 2"/></svg></span>Hjem
+    </button>
+    <button type="button" data-route="statistikk" data-tab="statistikk" aria-current="false">
+      <span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect class="tab-fill" x="4" y="11" width="4" height="9" rx="1.5"/><rect class="tab-fill" x="10" y="4" width="4" height="16" rx="1.5"/><rect class="tab-fill" x="16" y="8" width="4" height="12" rx="1.5"/></svg></span>Statistikk
+    </button>
+    <button type="button" data-route="innstillinger" data-tab="innstillinger" aria-current="false">
+      <span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle class="tab-fill" cx="16" cy="7" r="2.6"/><circle class="tab-fill" cx="10" cy="17" r="2.6"/></svg></span>Innstillinger
+    </button>
+  </nav>
+
+</div>
+
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="app/assets/avatars.js"></script>
+<script src="app/js/db.js"></script>
+<script src="app/js/store.js"></script>
+<script src="app/js/ui.js"></script>
+<script src="app/js/backup.js"></script>
+<script src="app/js/match.js"></script>
+<script src="app/js/scramble.js"></script>
+<script src="app/js/stats.js"></script>
+<script src="app/js/rapport.js"></script>
+<script src="app/js/screens.js"></script>
+<script src="app/js/screens-round.js"></script>
+<script src="app/js/screens-match.js"></script>
+<script src="app/js/screens-scramble.js"></script>
+<script src="app/js/screens-stats.js"></script>
+<script src="app/js/app.js"></script>
+</body>
+</html>
